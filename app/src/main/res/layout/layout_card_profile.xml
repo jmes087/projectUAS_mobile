@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@drawable/background_rounded_card">
+
+    <ImageView
+    android:id="@+id/icon_nama"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
+    android:src="@drawable/ic_person"
+    app:tint="#607D8B"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:contentDescription="Ikon Nama" />
+
+    <TextView
+        android:id="@+id/label_nama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Nama"
+        android:textColor="#607D8B"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_nama"
+        app:layout_constraintStart_toEndOf="@+id/icon_nama"
+        app:layout_constraintTop_toTopOf="@+id/icon_nama" />
+
+    <TextView
+        android:id="@+id/value_nama"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="Ahmad Hidayat"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_nama" />
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#CCCCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/value_nama" />
+
+    <ImageView
+        android:id="@+id/icon_nim"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_nim"
+        app:tint="#607D8B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_line"
+        android:contentDescription="Ikon NIM" />
+
+<!--    nim-->
+
+    <TextView
+        android:id="@+id/label_nim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="NIM"
+        android:textColor="#607D8B"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_nim"
+        app:layout_constraintStart_toEndOf="@+id/icon_nim"
+        app:layout_constraintTop_toTopOf="@+id/icon_nim" />
+
+    <TextView
+        android:id="@+id/value_nim"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="2021110001"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_nim" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

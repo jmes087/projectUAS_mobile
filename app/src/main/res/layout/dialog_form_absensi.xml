@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Form Absensi"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etKeterangan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Keterangan (Hadir)"
+        android:background="@android:drawable/edit_text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDetectedLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lokasi: Kampus A (Dalam Radius)"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btnKirimAbsensi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kirim Absensi"
+        android:backgroundTint="#2196F3"/>
+
+</LinearLayout>

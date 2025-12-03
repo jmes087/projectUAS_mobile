@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1a73e8</color>
+    <color name="colorPrimaryDark">#1557b0</color>
+    <color name="colorAccent">#1a73e8</color>
+    <color name="background">#f8f9fa</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_text">#6c757d</color>
+    <color name="gray_light">#e9ecef</color>
+
+    <!-- Status Colors -->
+    <color name="status_present_bg">#d1fae5</color>
+    <color name="status_present_text">#065f46</color>
+    <color name="status_sick_bg">#fef3c7</color>
+    <color name="status_sick_text">#92400e</color>
+    <color name="status_absent_bg">#fee2e2</color>
+    <color name="status_absent_text">#991b1b</color>
+
+    <color name="ic_person_bg">#3a81fc</color>
+</resources>

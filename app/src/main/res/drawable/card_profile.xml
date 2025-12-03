@@ -1,0 +1,7 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_card_profile"/>
+
+    <!-- Stroke overlay -->
+    <item android:drawable="@drawable/card_outline"/>
+</layer-list>
