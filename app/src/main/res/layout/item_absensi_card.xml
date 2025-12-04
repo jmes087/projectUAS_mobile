@@ -15,39 +15,99 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/tvNamaMatkul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Matkul"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+<!--        date-->
+
+        <ImageView
+            android:id="@+id/tvDateIc"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_nim"
+            app:layout_constraintTop_toBottomOf="@+id/tvNamaMatkul"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="5dp"/>
+        
+        <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30 Nov 2025"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:text="4 Desember 2025"
+            app:layout_constraintTop_toBottomOf="@id/tvNamaMatkul"
+            app:layout_constraintStart_toEndOf="@id/tvDateIc"
+            android:layout_marginStart="5dp"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+
+<!--        time-->
+
+        <ImageView
+            android:id="@+id/tvTimeIc"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_time"
+            app:layout_constraintTop_toBottomOf="@id/tvNamaMatkul"
+            app:layout_constraintStart_toEndOf="@id/tvDate"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="08:00 WIB"
+            android:text="08:00"
             android:textSize="14sp"
-            android:textColor="#757575"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDate"/>
+            app:layout_constraintStart_toEndOf="@id/tvTimeIc"
+            app:layout_constraintTop_toBottomOf="@id/tvNamaMatkul"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"/>
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disetujui"
-            android:textColor="#FFFFFF"
-            android:background="#4CAF50"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvDate"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="30 Nov 2025"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tvNamaMatkul"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvTime"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="08:00 WIB"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textColor="#757575"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvDate"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvStatus"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Disetujui"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:background="#4CAF50"-->
+<!--            android:paddingHorizontal="12dp"-->
+<!--            android:paddingVertical="4dp"-->
+<!--            android:textSize="12sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
