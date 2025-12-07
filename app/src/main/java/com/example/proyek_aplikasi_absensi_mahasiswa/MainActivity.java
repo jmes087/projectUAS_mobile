@@ -28,6 +28,10 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiFormDialog;
+import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiRejectedDialog;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -37,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
     // Titik absensi & radius
     private final double ABSEN_LAT = -7.957218477180774;
     private final double ABSEN_LON = 112.58915398187875;
-    private final float RADIUS_ABSEN = 300; // 300 meter
+    private final float RADIUS_ABSEN = 30; // 300 meter
 
     private Button buttonReqAbsen;
 
 
-    RecyclerView rvRiwayatAbsensi;
-    List<RiwayatAbsensi> riwayatList;
-    RiwayatAdapter adapter;
+//    RecyclerView rvRiwayatAbsensi;
+//    List<RiwayatAbsensi> riwayatList;
+//    RiwayatAdapter adapter;
 
 
     @Override
@@ -120,18 +124,12 @@ public class MainActivity extends AppCompatActivity {
 
                         float jarak = result[0];
 
-                        if (jarak <= RADIUS_ABSEN) {
-                            Toast.makeText(MainActivity.this,
-                                    "Anda berada dalam jangkauan absensi (" + (int) jarak + " m)",
-                                    Toast.LENGTH_SHORT).show();
-                            showPopupFormAbsen();
-                            // TODO → di sini nanti kita tambahkan proses "absen berhasil"
+                        if (jarak <= 50) {
+                            showFormDialog();        // tampilkan popup form absensi
                         } else {
-                            Toast.makeText(MainActivity.this,
-                                    "Di luar jangkauan (" + (int) jarak + " m)",
-                                    Toast.LENGTH_LONG).show();
-                            showPopupRejected();
+                            showRejectedDialog();    // tampilkan popup penolakan
                         }
+
 
                         // Stop menerima update
                         locationManager.removeUpdates(this);
@@ -186,7 +184,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void showFormDialog() {
+        AbsensiFormDialog dialog = new AbsensiFormDialog();
+        dialog.show(getSupportFragmentManager(), "FormDialog");
+    }
 
+    private void showRejectedDialog() {
+        AbsensiRejectedDialog dialog = new AbsensiRejectedDialog();
+        dialog.show(getSupportFragmentManager(), "RejectedDialog");
+    }
 
 }
 
