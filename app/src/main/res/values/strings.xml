@@ -3,10 +3,9 @@
 
     <string-array name="list_matkul">
         <item>Pemrograman Mobile</item>
-        <item>Basis Data</item>
+        <item>Basis Data Lanjut</item>
         <item>Kecerdasan Buatan</item>
-        <item>Jaringan Komputer</item>
-        <item>Struktur Data</item>
+        <item>Pemrograman Web</item>
     </string-array>
 
 </resources>
