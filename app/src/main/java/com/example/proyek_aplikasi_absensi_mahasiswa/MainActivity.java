@@ -7,36 +7,28 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import android.view.LayoutInflater;
-import android.view.View;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiFormDialog;
-import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiRejectedDialog;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.FirebaseDatabase;
-import java.util.HashMap;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,62 +39,110 @@ public class MainActivity extends AppCompatActivity {
     // Titik absensi & radius
     private final double ABSEN_LAT = -7.957218477180774;
     private final double ABSEN_LON = 112.58915398187875;
+    private final float ABSEN_RADIUS_METER = 500f; // meter
 
     private Button buttonReqAbsen;
-    AbsensiFormDialog dialog = new AbsensiFormDialog();
 
+    // RecyclerView riwayat
+    private RecyclerView rvRiwayatAbsensi;
+    private AbsensiAdapter absensiAdapter;
+    private final List<Absensi> absensiList = new ArrayList<>();
+    private DatabaseReference absensiRef;
 
+    // TextView counter "Disetujui"
+    private TextView tvCountApproved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Firebase
         FirebaseApp.initializeApp(this);
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        buttonReqAbsen = findViewById(R.id.buttonReqAbsen);
+        // Lokasi
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        // Tombol request absen
+        buttonReqAbsen = findViewById(R.id.buttonReqAbsen);
+        buttonReqAbsen.setOnClickListener(v -> cekLokasiUser());
 
-        buttonReqAbsen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cekLokasiUser();
-            }
-        });
+        // === Ambil TextView counter dari card absen_accepted ===
+        tvCountApproved = findViewById(R.id.tv_count);
 
-        dialog.setOnAbsensiSubmitListener(new AbsensiFormDialog.OnAbsensiSubmitListener() {
-            @Override
-            public void onSubmitAbsensi(String matkul, String tanggal, String jam) {
+        // === RecyclerView riwayat ===
+        rvRiwayatAbsensi = findViewById(R.id.rvRiwayatAbsensi);
+        rvRiwayatAbsensi.setLayoutManager(new LinearLayoutManager(this));
+        absensiAdapter = new AbsensiAdapter(absensiList);
+        rvRiwayatAbsensi.setAdapter(absensiAdapter);
 
-                // Buat object HashMap
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("nama", "Ahmad Hidayat"); // nanti bisa otomatis dari profile
-                data.put("matkul", matkul);
-                data.put("tanggal", tanggal);
-                data.put("jam", jam);
+        // Firebase reference
+        absensiRef = FirebaseDatabase.getInstance().getReference("absensi");
 
-                // Simpan ke Firebase
-                FirebaseDatabase.getInstance()
-                        .getReference("absensi")     // nama folder
-                        .push()
-                        .setValue(data)
-                        .addOnSuccessListener(a -> {
-                            Toast.makeText(MainActivity.this, "Absensi tersimpan!", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(MainActivity.this, "Gagal: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-            }
-        });
-
-
-        dialog.show(getSupportFragmentManager(), "AbsensiFormDialog");
+        // Load riwayat + update counter
+        setupRiwayatAbsensi();
     }
+
+    /**
+     * Ambil nama dari profile (value_nama),
+     * lalu baca data absensi di Firebase untuk nama tersebut,
+     * sekaligus update jumlah "Disetujui" di tv_count.
+     */
+    private void setupRiwayatAbsensi() {
+        TextView tvNamaProfil = findViewById(R.id.value_nama);
+        if (tvNamaProfil == null) {
+            Toast.makeText(this, "value_nama tidak ditemukan di layout", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String namaProfil = tvNamaProfil.getText().toString().trim();
+        if (namaProfil.isEmpty()) {
+            Toast.makeText(this, "Nama profil kosong, isi dulu di dashboard", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Query absensi dengan field "nama" = namaProfil
+        Query query = absensiRef.orderByChild("nama").equalTo(namaProfil);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                absensiList.clear();
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Absensi a = ds.getValue(Absensi.class);
+                    if (a != null) {
+                        absensiList.add(a);
+                    }
+                }
+
+                // Terbaru di atas
+                Collections.reverse(absensiList);
+                absensiAdapter.notifyDataSetChanged();
+
+                // === Update counter "Disetujui" ===
+                // Untuk saat ini kita anggap semua data di node "absensi" adalah yang disetujui.
+                int jumlahDisetujui = absensiList.size();
+                if (tvCountApproved != null) {
+                    tvCountApproved.setText(String.valueOf(jumlahDisetujui));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this,
+                        "Gagal memuat riwayat: " + error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // ================== LOKASI & DIALOG ==================
+
     private void cekLokasiUser() {
 
-        // Cek permission
+        // Cek permission lokasi
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -114,17 +154,17 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Cek apakah GPS ON
+        // Cek apakah GPS aktif
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(this, "Aktifkan GPS untuk mendapatkan lokasi", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Ambil lokasi 1x
+        // Ambil lokasi sekali
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                0,    // waktu minimum
-                0,    // jarak minimum
+                0,
+                0,
                 new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
@@ -144,16 +184,12 @@ public class MainActivity extends AppCompatActivity {
 
                         float jarak = result[0];
 
-                        if (jarak <= 500) {
-                            showFormDialog();       // tampilkan popup form absensi
-                            AbsensiFormDialog dialog = new AbsensiFormDialog();
-                            dialog.show(getSupportFragmentManager(), "AbsensiFormDialog");
+                        if (jarak <= ABSEN_RADIUS_METER) {
+                            showFormDialog();
                         } else {
-                            showRejectedDialog();    // tampilkan popup penolakan
+                            showRejectedDialog();
                         }
 
-
-                        // Stop menerima update
                         locationManager.removeUpdates(this);
                     }
                 }
@@ -176,36 +212,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showPopupFormAbsen() {
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_form_absensi, null);
-
-        // tombol di popup
-        Button cancelBtn = view.findViewById(R.id.cancel_button);
-        Button kirimBtn = view.findViewById(R.id.kirim_button);
-
-        cancelBtn.setOnClickListener(v -> dialog.dismiss());
-        kirimBtn.setOnClickListener(v -> {
-            // BELUM DIISI — sesuai permintaan
-            Toast.makeText(this, "Form akan diproses nanti", Toast.LENGTH_SHORT).show();
-        });
-
-        dialog.setContentView(view);
-        dialog.show();
-    }
-
-    private void showPopupRejected() {
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_absensi_rejected, null);
-
-        Button closeBtn = view.findViewById(R.id.btnCloseRejected);
-
-        closeBtn.setOnClickListener(v -> dialog.dismiss());
-
-        dialog.setContentView(view);
-        dialog.show();
-    }
-
     private void showFormDialog() {
         AbsensiFormDialog dialog = new AbsensiFormDialog();
         dialog.show(getSupportFragmentManager(), "FormDialog");
@@ -215,9 +221,4 @@ public class MainActivity extends AppCompatActivity {
         AbsensiRejectedDialog dialog = new AbsensiRejectedDialog();
         dialog.show(getSupportFragmentManager(), "RejectedDialog");
     }
-
-
-
-
 }
-
