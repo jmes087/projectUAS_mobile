@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "980647978116",
+    "firebase_url": "https://uas-pm-bd481-default-rtdb.firebaseio.com",
+    "project_id": "uas-pm-bd481",
+    "storage_bucket": "uas-pm-bd481.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980647978116:android:5f6157a2c725af6b1aced1",
+        "android_client_info": {
+          "package_name": "com.example.locationbasedservice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnx2NpCLzLXFhMT0f0iRKH6dZueUl_I0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980647978116:android:4c519b7328a25c1e1aced1",
+        "android_client_info": {
+          "package_name": "com.example.proyek_aplikasi_absensi_mahasiswa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnx2NpCLzLXFhMT0f0iRKH6dZueUl_I0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980647978116:android:2fb0788fa33411bd1aced1",
+        "android_client_info": {
+          "package_name": "com.example.uas_pemrogramanmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnx2NpCLzLXFhMT0f0iRKH6dZueUl_I0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

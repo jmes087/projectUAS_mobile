@@ -8,11 +8,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -30,6 +33,9 @@ import java.util.List;
 
 import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiFormDialog;
 import com.example.proyek_aplikasi_absensi_mahasiswa.AbsensiRejectedDialog;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,18 +47,16 @@ public class MainActivity extends AppCompatActivity {
     // Titik absensi & radius
     private final double ABSEN_LAT = -7.957218477180774;
     private final double ABSEN_LON = 112.58915398187875;
-    private final float RADIUS_ABSEN = 30; // 300 meter
 
     private Button buttonReqAbsen;
+    AbsensiFormDialog dialog = new AbsensiFormDialog();
 
-
-//    RecyclerView rvRiwayatAbsensi;
-//    List<RiwayatAbsensi> riwayatList;
-//    RiwayatAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseApp.initializeApp(this);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -61,24 +65,40 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-
-//        rvRiwayatAbsensi = findViewById(R.id.rvRiwayatAbsensi);
-//        riwayatList = new ArrayList<>();
-//        riwayatList.add(new RiwayatAbsensi("Pemrograman Mobile", "4 Des 2025", "08:00"));
-//        riwayatList.add(new RiwayatAbsensi("Basis Data", "1 Des 2025", "09:00"));
-//        riwayatList.add(new RiwayatAbsensi("AI Dasar", "28 Nov 2025", "10:00"));
-//
-//        adapter = new RiwayatAdapter(riwayatList);
-//
-//        rvRiwayatAbsensi.setLayoutManager(new LinearLayoutManager(this));
-//        rvRiwayatAbsensi.setAdapter(adapter);
-
         buttonReqAbsen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cekLokasiUser();
             }
         });
+
+        dialog.setOnAbsensiSubmitListener(new AbsensiFormDialog.OnAbsensiSubmitListener() {
+            @Override
+            public void onSubmitAbsensi(String matkul, String tanggal, String jam) {
+
+                // Buat object HashMap
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("nama", "Ahmad Hidayat"); // nanti bisa otomatis dari profile
+                data.put("matkul", matkul);
+                data.put("tanggal", tanggal);
+                data.put("jam", jam);
+
+                // Simpan ke Firebase
+                FirebaseDatabase.getInstance()
+                        .getReference("absensi")     // nama folder
+                        .push()
+                        .setValue(data)
+                        .addOnSuccessListener(a -> {
+                            Toast.makeText(MainActivity.this, "Absensi tersimpan!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(MainActivity.this, "Gagal: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+            }
+        });
+
+
+        dialog.show(getSupportFragmentManager(), "AbsensiFormDialog");
     }
     private void cekLokasiUser() {
 
@@ -124,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
 
                         float jarak = result[0];
 
-                        if (jarak <= 50) {
-                            showFormDialog();        // tampilkan popup form absensi
+                        if (jarak <= 500) {
+                            showFormDialog();       // tampilkan popup form absensi
+                            AbsensiFormDialog dialog = new AbsensiFormDialog();
+                            dialog.show(getSupportFragmentManager(), "AbsensiFormDialog");
                         } else {
                             showRejectedDialog();    // tampilkan popup penolakan
                         }
@@ -193,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
         AbsensiRejectedDialog dialog = new AbsensiRejectedDialog();
         dialog.show(getSupportFragmentManager(), "RejectedDialog");
     }
+
+
+
 
 }
 

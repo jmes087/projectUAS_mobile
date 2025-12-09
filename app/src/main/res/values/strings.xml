@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Proyek_Aplikasi_Absensi_Mahasiswa</string>
+
+    <string-array name="list_matkul">
+        <item>Pemrograman Mobile</item>
+        <item>Basis Data</item>
+        <item>Kecerdasan Buatan</item>
+        <item>Jaringan Komputer</item>
+        <item>Struktur Data</item>
+    </string-array>
+
 </resources>

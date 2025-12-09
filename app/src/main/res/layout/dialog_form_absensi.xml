@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_rounded_card"
-    android:paddingBottom="20dp">
+    android:paddingBottom="20dp"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
+    <!-- Header -->
     <View
         android:id="@+id/formHeaderBg"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,10 +27,10 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/tvPenjelasanForm"
@@ -36,21 +39,21 @@
         android:text="Isi data absensi anda"
         android:textSize="14sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tvFormHeader"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="3dp"/>
+        android:layout_marginTop="3dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFormHeader"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-<!--    nama matkul-->
+    <!-- Nama Matkul -->
     <ImageView
         android:id="@+id/icNamaMatkulForm"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_nama_matkkul"
-        app:layout_constraintTop_toBottomOf="@+id/formHeaderBg"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/formHeaderBg"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/tvNamaMatkulForm"
@@ -58,70 +61,35 @@
         android:layout_height="wrap_content"
         android:text="Nama Mata Kuliah"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/formHeaderBg"
-        app:layout_constraintStart_toEndOf="@id/icNamaMatkulForm"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="18dp"
-        android:layout_marginStart="10dp"/>
+        app:layout_constraintTop_toBottomOf="@id/formHeaderBg"
+        app:layout_constraintStart_toEndOf="@id/icNamaMatkulForm"/>
 
+    <!-- SPINNER MATKUL -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNamaMatkul"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:boxStrokeColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:boxStrokeWidth="2dp"
+        app:boxStrokeColor="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMatkulForm"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <AutoCompleteTextView
             android:id="@+id/dropdownMatkul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Pilih Mata Kuliah"
-            android:inputType="none"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:padding="8dp"
-            android:textSize="24sp"
-            android:background="@drawable/bg_edittext"/>
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:background="@android:color/transparent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <!--    hari dan tanggal-->
-    <ImageView
-        android:id="@+id/icHaridanTanggalForm"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_nim"
-        app:tint="@color/colorPrimaryDark"
-        app:layout_constraintTop_toBottomOf="@+id/tilNamaMatkul"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"/>
-
-    <TextView
-        android:id="@+id/tvHaridanTanggalForm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hari dan Tanggal"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tilNamaMatkul"
-        app:layout_constraintStart_toEndOf="@id/icHaridanTanggalForm"
-        android:layout_marginTop="18dp"
-        android:layout_marginStart="10dp"/>
-
-    <EditText
-        android:id="@+id/etHaridanTanggal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tanggal Absensi"
-        android:inputType="text"
-        android:textSize="23sp"
-        app:layout_constraintTop_toBottomOf="@+id/icHaridanTanggalForm"
-        android:background="@drawable/bg_edittext"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
-
+    <!-- BUTTON BATAL -->
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="0dp"
@@ -129,19 +97,16 @@
         android:text="Batal"
         android:textColor="@color/colorPrimary"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginTop="20dp"
-
+        android:layout_marginEnd="10dp"
         android:background="@drawable/bg_button_cancel_form"
         app:backgroundTint="@null"
-
         app:layout_constraintWidth_percent="0.42"
-        app:layout_constraintTop_toBottomOf="@+id/etHaridanTanggal"
+        app:layout_constraintTop_toBottomOf="@id/tilNamaMatkul"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/kirim_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"/>
+        app:layout_constraintEnd_toStartOf="@+id/kirim_button"/>
 
+    <!-- BUTTON KIRIM -->
     <Button
         android:id="@+id/kirim_button"
         android:layout_width="0dp"
@@ -149,17 +114,13 @@
         android:text="Kirim"
         android:textColor="#FFFFFF"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
-
+        android:layout_marginEnd="20dp"
         android:background="@drawable/bg_button_kirim_form"
         app:backgroundTint="@null"
-
         app:layout_constraintWidth_percent="0.42"
-        app:layout_constraintTop_toBottomOf="@+id/etHaridanTanggal"
-        app:layout_constraintStart_toEndOf="@+id/cancel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@id/tilNamaMatkul"
+        app:layout_constraintStart_toEndOf="@id/cancel_button"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
